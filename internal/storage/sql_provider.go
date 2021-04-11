@@ -20,7 +20,7 @@ type SQLProvider struct {
 	name string
 
 	sqlUpgradesCreateTableStatements        map[SchemaVersion]map[string]string
-	sqlUpgradesCreateTableIndexesStatements map[SchemaVersion][]string
+	sqlUpgradesCreateTableIndexesStatements map[SchemaVersion][]CreateTableIndexStmt
 
 	sqlGetPreferencesByUsername     string
 	sqlUpsertSecondFactorPreference string
@@ -63,7 +63,7 @@ func (p *SQLProvider) getSchemaBasicDetails() (version SchemaVersion, tables []s
 	var table string
 
 	for rows.Next() {
-		err := rows.Scan(&table)
+		err = rows.Scan(&table)
 		if err != nil {
 			return version, tables, err
 		}
@@ -72,13 +72,13 @@ func (p *SQLProvider) getSchemaBasicDetails() (version SchemaVersion, tables []s
 	}
 
 	if utils.IsStringInSlice(configTableName, tables) {
-		rows, err := p.db.Query(p.sqlConfigGetValue, "schema", "version")
+		rows, err = p.db.Query(p.sqlConfigGetValue, "schema", "version")
 		if err != nil {
 			return version, tables, err
 		}
 
 		for rows.Next() {
-			err := rows.Scan(&version)
+			err = rows.Scan(&version)
 			if err != nil {
 				return version, tables, err
 			}
@@ -106,7 +106,7 @@ func (p *SQLProvider) upgrade() error {
 
 		switch version {
 		case 0:
-			err := p.upgradeSchemaToVersion001(tx, tables)
+			err = p.upgradeSchemaToVersion001(tx, tables)
 			if err != nil {
 				return p.handleUpgradeFailure(tx, 1, err)
 			}

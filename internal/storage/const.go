@@ -1,9 +1,5 @@
 package storage
 
-import (
-	"fmt"
-)
-
 const storageSchemaCurrentVersion = SchemaVersion(1)
 const storageSchemaUpgradeMessage = "Storage schema upgraded to v"
 const storageSchemaUpgradeErrorText = "storage schema upgrade failed at v"
@@ -15,6 +11,8 @@ const totpSecretsTableName = "totp_secrets"
 const u2fDeviceHandlesTableName = "u2f_devices"
 const authenticationLogsTableName = "authentication_logs"
 const configTableName = "config"
+
+const checkIndexExistsMySQLStmt = "SELECT COUNT(1) AS exists FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema=DATABASE() AND table_name=? AND index_name=?"
 
 // sqlUpgradeCreateTableStatements is a map of the schema version number, plus a map of the table name and the statement used to create it.
 // The statement is fmt.Sprintf'd with the table name as the first argument.
@@ -30,9 +28,12 @@ var sqlUpgradeCreateTableStatements = map[SchemaVersion]map[string]string{
 }
 
 // sqlUpgradesCreateTableIndexesStatements is a map of t he schema version number, plus a slice of statements to create all of the indexes.
-var sqlUpgradesCreateTableIndexesStatements = map[SchemaVersion][]string{
+var sqlUpgradesCreateTableIndexesStatements = map[SchemaVersion][]CreateTableIndexStmt{
 	SchemaVersion(1): {
-		fmt.Sprintf("CREATE INDEX IF NOT EXISTS usr_time_idx ON %s (username, time)", authenticationLogsTableName),
+		{Index: "usr_time_idx", Table: authenticationLogsTableName, CommonStmt: "CREATE INDEX IF NOT EXISTS ? ON ? (username, time)"},
+	},
+	SchemaVersion(2): {
+		{Index: "usr_time_idx", Table: authenticationLogsTableName, CommonStmt: "CREATE INDEX IF NOT EXISTS ? ON ? (username, time)"},
 	},
 }
 

@@ -20,7 +20,8 @@ func NewMySQLProvider(configuration schema.MySQLStorageConfiguration) *MySQLProv
 		SQLProvider{
 			name: "mysql",
 
-			sqlUpgradesCreateTableStatements: sqlUpgradeCreateTableStatements,
+			sqlUpgradesCreateTableStatements:        sqlUpgradeCreateTableStatements,
+			sqlUpgradesCreateTableIndexesStatements: sqlUpgradesCreateTableIndexesStatements,
 
 			sqlGetPreferencesByUsername:     fmt.Sprintf("SELECT second_factor_method FROM %s WHERE username=?", userPreferencesTableName),
 			sqlUpsertSecondFactorPreference: fmt.Sprintf("REPLACE INTO %s (username, second_factor_method) VALUES (?, ?)", userPreferencesTableName),
