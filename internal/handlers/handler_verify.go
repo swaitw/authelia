@@ -238,7 +238,7 @@ func handleUnauthorized(ctx *middlewares.AutheliaCtx, targetURL fmt.Stringer, is
 	}
 
 	switch {
-	case ctx.IsXHR() || !ctx.AcceptsMIME("text/html") || rd == "":
+	case (ctx.IsXHR() || !ctx.AcceptsMIME("text/html")) && rd != "":
 		statusCode = fasthttp.StatusUnauthorized
 	default:
 		switch rm {
