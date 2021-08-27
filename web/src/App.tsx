@@ -13,6 +13,7 @@ import {
     RegisterOneTimePasswordRoute,
     LogoutRoute,
     ConsentRoute,
+    ForbiddenRoute,
 } from "@constants/Routes";
 import NotificationsContext from "@hooks/NotificationsContext";
 import { Notification } from "@models/Notifications";
@@ -21,6 +22,7 @@ import { getBasePath } from "@utils/BasePath";
 import { getRememberMe, getResetPassword, getTheme } from "@utils/Configuration";
 import RegisterOneTimePassword from "@views/DeviceRegistration/RegisterOneTimePassword";
 import RegisterSecurityKey from "@views/DeviceRegistration/RegisterSecurityKey";
+import ForbiddenView from "@views/Information/ForbiddenView";
 import ConsentView from "@views/LoginPortal/ConsentView/ConsentView";
 import LoginPortal from "@views/LoginPortal/LoginPortal";
 import SignOut from "@views/LoginPortal/SignOut/SignOut";
@@ -82,6 +84,9 @@ const App: React.FC = () => {
                         </Route>
                         <Route path={ConsentRoute} exact>
                             <ConsentView />
+                        </Route>
+                        <Route path={ForbiddenRoute} exact>
+                            <ForbiddenView title={`Access Forbidden`} />
                         </Route>
                         <Route path={FirstFactorRoute}>
                             <LoginPortal rememberMe={getRememberMe()} resetPassword={getResetPassword()} />

@@ -28,7 +28,7 @@ function showListItemAvatar(id: string) {
     }
 }
 
-const ConsentView = function (props: Props) {
+const ConsentView = function () {
     const classes = useStyles();
     const history = useHistory();
     const redirect = useRedirector();
@@ -131,12 +131,6 @@ const ConsentView = function (props: Props) {
 };
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-        display: "block",
-        justifyContent: "center",
-    },
     scopesListContainer: {
         textAlign: "center",
     },

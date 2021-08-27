@@ -12,3 +12,5 @@ export const ResetPasswordStep2Route: string = "/reset-password/step2";
 export const RegisterSecurityKeyRoute: string = "/security-key/register";
 export const RegisterOneTimePasswordRoute: string = "/one-time-password/register";
 export const LogoutRoute: string = "/logout";
+
+export const ForbiddenRoute: string = "/information/forbidden";
